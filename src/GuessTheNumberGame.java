@@ -63,7 +63,7 @@ public class GuessTheNumberGame {
     }
 
     // Declaración de método
-    private static boolean checkGuess(Player player){
+    protected static boolean checkGuess(Player player){
         // DONE: Ejecuta un turno, obtiene la suposición y evalúa el nuevo estado de la partida.
 
         boolean validation = false;
@@ -75,22 +75,22 @@ public class GuessTheNumberGame {
                 validation = true;
 
             } else if (guess > (targetNumber + 30)){
-                System.out.println("Very very high!!");
+                System.out.println("Very very high!!" + targetNumber);
 
             } else if (guess > (targetNumber + 10)){
-                System.out.println("Too high!");
+                System.out.println("Too high!" + targetNumber);
 
             } else if (guess > targetNumber){
-                System.out.println("Little high!");
+                System.out.println("Little high!" + targetNumber);
 
             } else if (guess < targetNumber - 30){
-                System.out.println("Very very low!!");
+                System.out.println("Very very low!!" + targetNumber);
 
             } else if (guess < targetNumber - 10){
-                System.out.println("Too low!");
+                System.out.println("Too low!" + targetNumber);
 
             } else {
-                System.out.println("Little low!");
+                System.out.println("Little low!" + targetNumber);
             }
         } catch (IOException e) {
             System.err.println("Error al ejecutar MakeGuess: " + e.getMessage());
