@@ -75,22 +75,22 @@ public class GuessTheNumberGame {
                 validation = true;
 
             } else if (guess > (targetNumber + 30)){
-                System.out.println("Very very high!!" + targetNumber);
+                System.out.println("Very very high!!");
 
             } else if (guess > (targetNumber + 10)){
-                System.out.println("Too high!" + targetNumber);
+                System.out.println("Too high!");
 
             } else if (guess > targetNumber){
-                System.out.println("Little high!" + targetNumber);
+                System.out.println("Little high!");
 
             } else if (guess < targetNumber - 30){
-                System.out.println("Very very low!!" + targetNumber);
+                System.out.println("Very very low!!");
 
             } else if (guess < targetNumber - 10){
-                System.out.println("Too low!" + targetNumber);
+                System.out.println("Too low!");
 
             } else {
-                System.out.println("Little low!" + targetNumber);
+                System.out.println("Little low!");
             }
         } catch (IOException e) {
             System.err.println("Error al ejecutar MakeGuess: " + e.getMessage());
