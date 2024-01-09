@@ -1,8 +1,8 @@
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
@@ -12,10 +12,14 @@ import static org.mockito.Mockito.*;
 
 class GuessTheNumberGameTest {
     //private static Player mockPlayer;
-    private static final PrintStream originalOut = System.out;
-    private static final PrintStream originalErr = System.err;
-    private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    //private static final PrintStream originalOut = System.out;
+    //private static final PrintStream originalErr = System.err;
+    // private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+    private ByteArrayOutputStream outContent;
+    private InputStream originalSystemIn;
+    private PrintStream originalSystemOut;
 
     //@Mock
     private static HumanPlayer mockHumanPlayer;
@@ -32,17 +36,28 @@ class GuessTheNumberGameTest {
         mockComputerPlayer = mock(ComputerPlayer.class);
         when(mockComputerPlayer.getName()).thenReturn("mockComputer");
 
+        // originalSystemOut = System.out;
+        outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
+        // originalSystemIn = System.in;
 
+        //System.setOut(new PrintStream(outContent));
+        //System.setErr(new PrintStream(errContent));
+        //System.out.println("BeforeEach-----------------------");
     };
 
-    @AfterEach
-    public void restoreStreams(){
-        System.setOut(originalOut);
-        System.setErr(originalErr);
+    //@AfterEach
+    //public void restoreStreams(){
+        // System.setOut(originalSystemOut);
+        // System.setIn(originalSystemIn);
+
+
+        //System.setOut(new PrintStream( new ByteArrayOutputStream()));
+        //System.setErr(new PrintStream( new ByteArrayOutputStream()));
+
         //reset(mockComputerPlayer);
-    };
+        //System.out.println("AfterEach-----------------------");
+    //};
 
     @Test
     void getTheCorrectName(){
@@ -68,24 +83,24 @@ class GuessTheNumberGameTest {
 
     @Test
     void checkExactAnswerAsHuman() {
+        //System.setOut(originalOut);
         GuessTheNumberGame.targetNumber = 50;
 
         when(mockHumanPlayer.makeGuess()).thenReturn(50);
         assertTrue(GuessTheNumberGame.checkGuess(mockHumanPlayer));
         assertEquals("Right on the nail mockUser!!!",outContent.toString()
                 .trim());
-        System.setOut(originalOut);
     };
 
     @Test
     void checkLittleHighAnswerAsHuman(){
         //restoreStreams();
+        //System.setOut(originalOut);
         GuessTheNumberGame.targetNumber = 50;
 
         when(mockHumanPlayer.makeGuess()).thenReturn(60);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockHumanPlayer));
-        assertEquals("Little high!50",outContent.toString().trim());
-        System.setOut(originalOut);
+        assertEquals("Little high!",outContent.toString().trim());
     };
 
     @Test
@@ -93,10 +108,10 @@ class GuessTheNumberGameTest {
         //restoreStreams();
         GuessTheNumberGame.targetNumber = 50;
 
-        when(mockHumanPlayer.makeGuess()).thenReturn(70);
+        when(mockHumanPlayer.makeGuess()).thenReturn(61);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockHumanPlayer));
-        assertEquals("Too high!50",outContent.toString().trim());
-        System.setOut(originalOut);
+        assertEquals("Too high!",outContent.toString().trim());
+        //System.setOut(originalOut);
     };
 
     @Test
@@ -104,10 +119,10 @@ class GuessTheNumberGameTest {
         //restoreStreams();
         GuessTheNumberGame.targetNumber = 50;
 
-        when(mockHumanPlayer.makeGuess()).thenReturn(80);
+        when(mockHumanPlayer.makeGuess()).thenReturn(81);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockHumanPlayer));
-        assertEquals("Too high!50",outContent.toString().trim());
-        System.setOut(originalOut);
+        assertEquals("Very very high!!",outContent.toString().trim());
+        //System.setOut(originalOut);
     };
 
     @Test
@@ -118,7 +133,7 @@ class GuessTheNumberGameTest {
         when(mockComputerPlayer.makeGuess()).thenReturn(50);
         assertTrue(GuessTheNumberGame.checkGuess(mockComputerPlayer));
         assertEquals("Right on the nail mockComputer!!!",outContent.toString().trim());
-        System.setOut(originalOut);
+        //System.setOut(originalOut);
     };
 
     @Test
@@ -129,16 +144,16 @@ class GuessTheNumberGameTest {
         //reset(mockComputerPlayer);
         when(mockComputerPlayer.makeGuess()).thenReturn(40);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockComputerPlayer));
-        assertEquals("Little low!50",outContent.toString().trim());
+        assertEquals("Little low!",outContent.toString().trim());
     }
 
     @Test
     void checkTooLowerAnswerAsComputer(){
         GuessTheNumberGame.targetNumber = 50;
 
-        when(mockComputerPlayer.makeGuess()).thenReturn(30);
+        when(mockComputerPlayer.makeGuess()).thenReturn(39);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockComputerPlayer));
-        assertEquals("Too low!50",outContent.toString().trim());
+        assertEquals("Too low!",outContent.toString().trim());
 
     }
     @Test
@@ -147,7 +162,7 @@ class GuessTheNumberGameTest {
 
         when(mockComputerPlayer.makeGuess()).thenReturn(19);
         assertEquals(false, GuessTheNumberGame.checkGuess(mockComputerPlayer));
-        assertEquals("Very very low!!50",outContent.toString().trim());
+        assertEquals("Very very low!!",outContent.toString().trim());
 
     }
 }
